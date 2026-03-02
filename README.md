@@ -27,11 +27,6 @@ Initialising GS2 on the Viking cluster requires running tests built into GS2
    pip install numpy netCDF4 xarray matplotlib f90nml pytest
 ```
 
-**Request an interactive compute node**
-```bash
-   srun --nodes=1 --ntasks=8 --time=01:00:00 --pty /bin/bash
-```
-
 **Navigate to the GS2 source directory**
 ```bash
    cd ~/software/src/gs2
@@ -41,11 +36,6 @@ Initialising GS2 on the Viking cluster requires running tests built into GS2
 ```bash
    module purge
    module load GCC OpenMPI netCDF-Fortran FFTW
-```
-
-**Reactivate the Python environment**
-```bash
-   source ~/GS2env/bin/activate
 ```
 
 **Set environment variables**
@@ -71,3 +61,11 @@ This hangs at the 'namelists_collection/.' test. It also hangs on other tests wh
 ```bash
     make nonlinear_tests NTESTPROCS=6 TEST_LEVEL=2
 ```
+
+To run code more computationally intensive than these tests on Viking, one must use the compute nodes. To access one of these nodes, you must request access and enter a queue using the following command:
+
+**Request an interactive compute node**
+```bash
+   srun --nodes=1 --ntasks=8 --time=01:00:00 --pty /bin/bash
+```
+Where --ntasks>1 to run GS2 with mpi. The time one plans to spend on the node can be altered, too, using the --time keyword. 
