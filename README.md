@@ -69,3 +69,22 @@ To run code more computationally intensive than these tests on Viking, one must 
    srun --nodes=1 --ntasks=8 --time=01:00:00 --pty /bin/bash
 ```
 Where --ntasks>1 to run GS2 with mpi. The time one plans to spend on the node can be altered, too, using the --time keyword. 
+
+## Adding files to this GitHub page 
+Once cloning this file to where you are working on it, setting up an ssh authentication key, one can edit this page. 
+
+Add the file(s) using,
+```bash
+   git add example.py
+```
+
+Commit the git, making reference to what you are doing,
+```bash
+   git commit -m "Additional example script, does this example function." 
+```
+Push, to a certain branch, can merge branches later for merging straight to the orginal branch:
+```bash
+   git push origin main
+```
+
+ 
