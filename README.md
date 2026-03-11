@@ -68,4 +68,41 @@ To run code more computationally intensive than these tests on Viking, one must 
 ```bash
    srun --nodes=1 --ntasks=8 --time=01:00:00 --pty /bin/bash
 ```
-Where --ntasks>1 to run GS2 with mpi. The time one plans to spend on the node can be altered, too, using the --time keyword. 
+Where --ntasks>1 to run GS2 with MPI. The time one plans to spend on the node can be altered, too, using the --time keyword. 
+
+## Adding files to this GitHub page 
+Once cloning this file to where you are working on it, setting up an SSH authentication key, one can edit this page. 
+
+Add the file(s) using,
+```bash
+   git add example.py
+```
+
+Commit the git, making reference to what you are doing,
+```bash
+   git commit -m "Additional example script, does this example function." 
+```
+Push, to a certain branch, can merge branches later for merging straight to the original branch:
+```bash
+   git push origin main
+```
+
+## Adding a bash command
+
+In the directory you want to add the .sh file. Type into the command prompt
+```bash
+   cat << 'EOF' > example.sh
+ ```
+Following this, one can create the .sh file, and then complete the file by typing into the prompt:
+```bash
+   EOF
+```
+To run the bash command, first you initiate the file using,
+```bash
+   chmod +x example.sh
+```
+Then you can run using the following (additional files will be inputs for the file):
+```bash
+   ./example.sh example.in
+```
+
