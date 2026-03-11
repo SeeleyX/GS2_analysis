@@ -97,4 +97,12 @@ Following this, one can create the .sh file, and then complete the file by typin
 ```bash
    EOF
 ```
+To run the bash command, first you initiate the file using,
+```bash
+   chmod +x example.sh
+```
+Then you can run using the following (additional files will be inputs for the file):
+```bash
+   ./example.sh example.in
+```
 
