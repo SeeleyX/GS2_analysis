@@ -12,9 +12,9 @@
  shat = 0.8
  pk = 1.4
  shift = 0.0
- akappa = 1.0   
- akappri = 0.0  
- tri = 0.0 
+ akappa = 1.0
+ akappri = 0.0
+ tri = 0.0
  tripri = 0.0
  rhoc = 0.5
 /
@@ -97,8 +97,8 @@
  print_line = .false.
  write_verr = .false.
  write_avg_moments = .F.
- nwrite = 10000
- navg = 10
+ nwrite = 5
+ navg = 5
  omegatol = -0.001
  omegatinst = 500.0
  save_for_restart = .false.
