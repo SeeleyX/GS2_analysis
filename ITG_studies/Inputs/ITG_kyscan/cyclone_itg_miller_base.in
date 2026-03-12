@@ -102,4 +102,5 @@
  omegatol = -0.001
  omegatinst = 500.0
  save_for_restart = .false.
+ write_fluxes = .true.
 /
