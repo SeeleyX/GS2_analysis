@@ -1,0 +1,43 @@
+# =========================
+# macOS System Files
+# =========================
+.DS_Store
+**/.DS_Store
+
+# =========================
+# Python & Virtual Environments
+# =========================
+gs2_venv/
+venv/
+env/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# =========================
+# GS2 Simulation Outputs & Temp Files
+# =========================
+# Ignore NetCDF data files
+*.out.nc
+
+# Ignore Fortran outputs
+*.fort.*
+fort.*
+
+# Ignore GS2 specific log/status files
+*.error
+*.bishop
+*.exit_reason
+*.timing_stats
+*.vspace_integration_error
+
+# Ignore scratch and temporary hidden input files
+*.scratch
+.*.scratch
+.*.in
+
+# =========================
+# IDEs and Editors
+# =========================
+.vscode/
+.idea/
