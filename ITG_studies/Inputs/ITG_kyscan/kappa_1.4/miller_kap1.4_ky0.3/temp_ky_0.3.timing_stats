@@ -1,0 +1,28 @@
+Region                    Min (s)   Max (s)  Mean (s)    P0 (s)      Ip min Ip max
+-----------------------------------------------------------------------------------
+Initialization              0.833     0.834     0.834     0.834      1      0
+field matrix invert         0.014     0.014     0.014     0.014      1      0
+field matrix invert mpi     0.006     0.014     0.012     0.006      0      3
+field matrix dump           0.000     0.000     0.000     0.000      0      0
+field matrix read           0.000     0.000     0.000     0.000      0      0
+Advance steps               7.752     7.760     7.756     7.758      1      2
+field solve                 0.633     0.831     0.729     0.831      3      0
+field solve mpi             0.312     0.504     0.404     0.504      3      0
+collisions                  0.000     0.000     0.000     0.000      0      3
+collisions mpi              0.000     0.000     0.000     0.000      0      0
+explicit/nl                 0.000     0.000     0.000     0.000      0      3
+explicit/nl mpi             0.000     0.000     0.000     0.000      0      0
+explicit/nl fft             0.000     0.000     0.000     0.000      0      2
+explicit/nl fields          0.000     0.000     0.000     0.000      0      0
+diagnostics                 0.868     1.020     0.947     0.868      0      3
+Re-initialize               0.000     0.000     0.000     0.000      0      0
+Redistribute                0.000     0.000     0.000     0.000      0      0
+redistribute mpi            0.000     0.000     0.000     0.000      0      0
+redistribute copy           0.000     0.000     0.000     0.000      0      0
+Finishing                   0.000     0.012     0.003     0.012      1      0
+MPI                         0.743     1.506     1.304     0.743      0      2
+Overheads                   0.000     0.000     0.000     0.000      2      0
+Collectives                 0.742     1.505     1.304     0.742      0      2
+PTP                         0.000     0.000     0.000     0.000      0      0
+Sync                        0.000     0.000     0.000     0.000      0      3
+Total                       8.794     8.804     8.797     8.804      3      0

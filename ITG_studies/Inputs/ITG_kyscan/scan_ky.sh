@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE_FILE="cyclone_itg_miller_base.in"
+BASE_FILE=$1
 
 # Check if the base file exists
 if [ ! -f "$BASE_FILE" ]; then
@@ -9,7 +9,7 @@ if [ ! -f "$BASE_FILE" ]; then
 fi
 
 # Loop from 0.2 to 1.0 in steps of 0.1
-for ky in $(seq 0.2 0.1 1.0); do
+for ky in $(seq 0.1 0.1 1.0); do
     
     echo "======================================="
     echo " Starting automated run for aky = $ky"

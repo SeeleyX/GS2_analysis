@@ -11,10 +11,10 @@ fi
 
 # 3. Extract the aky value using grep and awk
 KY_VAL=$(grep -i "^[[:space:]]*aky" $INPUT_FILE | awk -F'=' '{print $2}' | tr -d ' ')
+KAP_VAL=$(grep -i "^[[:space:]]*akappa" $INPUT_FILE | awk -F'=' '{print $2}' | tr -d ' ')
 
 # 4. Define the target directory name
-DIR_NAME="miller_${KY_VAL}"
-
+DIR_NAME="miller_kap${KAP_VAL}_ky${KY_VAL}"
 # 5. Create the directory (if it doesn't already exist)
 mkdir -p $DIR_NAME
 
