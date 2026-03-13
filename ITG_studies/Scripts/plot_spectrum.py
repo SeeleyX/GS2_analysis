@@ -1,11 +1,18 @@
 import sys
 import os
 import glob
+import re
 import xarray as xr
 import numpy as np
 import matplotlib.pyplot as plt
 
 def plot_ky_spectrum(base_dir):
+    match = re.search(r'kappa_([0-9.]+)', base_dir)
+    if match:
+        kappa_val = match.group(1)
+    else:
+        kappa_val = "unknown"
+
     # 1. Find all .out.nc files in the subdirectories
     search_pattern = f"{base_dir}/*/*.out.nc"
     nc_files = glob.glob(search_pattern)
@@ -14,7 +21,7 @@ def plot_ky_spectrum(base_dir):
         print(f"Error: No .out.nc files found inside '{base_dir}'.")
         return
 
-    print(f"Found {len(nc_files)} files. Extracting data...")
+    print(f"Found {len(nc_files)} files in {base_dir}. Extracting data...")
 
     ky_list = []
     gamma_list = []
@@ -69,19 +76,19 @@ def plot_ky_spectrum(base_dir):
     ax2.axhline(0, color='black', linewidth=1, linestyle=':')
 
     # Title and Layout
-    plt.title('Miller ITG Growth Rate Spectrum', fontsize=14)
+    plt.title(rf'Miller ITG Growth Rate Spectrum ($\kappa = {kappa_val}$)', fontsize=14)
     fig.tight_layout()
     
     # 5. Handle Directory Creation and Saving
     output_dir = "Figures"
     os.makedirs(output_dir, exist_ok=True) # Creates the folder if it doesn't exist
     
-    save_path = os.path.join(output_dir, "miller_ky-scan.png")
+    save_path = os.path.join(output_dir, f"miller_ky-scan_kappa_{kappa_val}.png")
     plt.savefig(save_path, dpi=300)
     
     print(f"Plot successfully saved to: '{save_path}'")
     plt.show()
 
 if __name__ == "__main__":
-    target_directory = sys.argv[1] if len(sys.argv) > 1 else "Inputs/ITG_kyscan"
+    target_directory = sys.argv[1] if len(sys.argv) > 1 else "Inputs/ITG_kyscan/kappa_1.0"
     plot_ky_spectrum(target_directory)
