@@ -8,8 +8,8 @@ if [ ! -f "$BASE_FILE" ]; then
     exit 1
 fi
 
-# Loop from 0.1 to 1.0 in steps of 0.1
-for ky in $(seq 2.0 1.0 70.0); do
+# Loop from 0.1 to 1.5 in steps of 0.1
+for ky in $(seq 0.1 0.1 1.5); do
     
     echo "======================================="
     echo " Starting automated run for aky = $ky"
