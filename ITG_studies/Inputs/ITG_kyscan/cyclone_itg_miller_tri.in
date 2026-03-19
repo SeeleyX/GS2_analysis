@@ -14,7 +14,7 @@
  shift = 0.0
  akappa = 1.8   
  akappri = 0.0  
- tri = 0.1 
+ tri = 0.2 
  tripri = 0.0
  rhoc = 0.5
 /

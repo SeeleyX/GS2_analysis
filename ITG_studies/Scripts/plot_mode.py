@@ -34,7 +34,7 @@ def plot_parallel_mode_structure(base_dir, param_type, target_val=None):
             
             # Matches formats like 'miller_tri0.0' or 'kappa_1.1'
             match = re.search(rf'{param_type}_?([0-9.]+)', file)  
-                      
+
             if match:
                 file_val = float(match.group(1))
                 if file_val != target_val:
@@ -47,8 +47,12 @@ def plot_parallel_mode_structure(base_dir, param_type, target_val=None):
             # Extract ky directly from the file data
             ky = float(ds['ky'].squeeze().values)
             
-            # Extract the parallel coordinate (theta)
+            # Extract the parallel coordinate (theta) and magnetic shear (shat)
             theta = ds['theta'].squeeze().values
+            shat = float(ds['shat'].squeeze().values)
+
+            # Calculate the local radial wavenumber k_x(theta)
+            kx_local = shat * ky * theta
             
             # Extract and process phi
             phi_complex = ds['phi'].squeeze()
@@ -59,8 +63,8 @@ def plot_parallel_mode_structure(base_dir, param_type, target_val=None):
             phi_mag = np.sqrt(phi_real**2 + phi_imag**2)
             phi_mag_normalized = phi_mag / np.max(phi_mag)
             
-            mode_data[ky] = {'theta': theta, 'phi': phi_mag_normalized}
-            
+            mode_data[ky] = {'kx': kx_local, 'phi': phi_mag_normalized} 
+
             ds.close()
             
         except Exception as e:
@@ -78,16 +82,19 @@ def plot_parallel_mode_structure(base_dir, param_type, target_val=None):
 
     # Plot each ky line
     for idx, ky in enumerate(sorted_kys):
-        theta = mode_data[ky]['theta']
+        kx = mode_data[ky]['kx']
         phi = mode_data[ky]['phi']
         
         label_str = rf'$k_y$ = {ky}'
-        ax.plot(theta, phi, color=colors[idx], linewidth=2, label=label_str)
+        ax.plot(kx, phi, color=colors[idx], linewidth=2, label=label_str)
 
     # Format the Plot
-    ax.set_title(f'Parallel Mode Structure ({param_type} = {target_val})', fontsize=16)
-    ax.set_xlabel(r'Poloidal Angle ($\theta$)', fontsize=14)
+    ax.set_title(f'Mode Structure vs Radial Wavenumber ({param_type} = {target_val})', fontsize=16)
+    ax.set_xlabel(r'Local Radial Wavenumber ($k_x = \hat{s} k_y \theta$)', fontsize=14)
     ax.set_ylabel(r'Normalised Amplitude ($|\Phi_N|$)', fontsize=14)
+
+    # Set x-limits from -5pi to 5pi
+    ax.set_xlim(-5 * np.pi, 5 * np.pi)
     
     ax.axvline(0, color='black', linestyle='--', alpha=0.5)
     ax.grid(True, linestyle=':', alpha=0.7)

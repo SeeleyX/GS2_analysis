@@ -15,3 +15,9 @@ Plotting the total flux as a function of $k_y$ will automatically plot every val
 ```bash
 python Scripts/plot_flux_ratio.py Inputs/ITG_kyscan
 ```
+
+Plotting ```plot_mode.py``` and ```plot_single_spectrum.py``` you need to specify what type of parameter is being varied. For example for a single $k_y$ spectrum plot of a triangulation dataset you must type:
+```bash
+python Scripts/plot_ky_spectrum.py Inputs/ITG_kyscan/tri_0.0 tri
+```
+Where ```tri``` defines the parameter using the GS2 input parameter. 
