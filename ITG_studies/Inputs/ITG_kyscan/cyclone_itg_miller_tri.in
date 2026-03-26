@@ -1,12 +1,12 @@
 &kt_grids_single_parameters
-  aky = 0.1
+  aky = 1.0
   akx = 0.0
 /
 
 &theta_grid_parameters
  geotype = 0
  ntheta = 64
- nperiod = 10
+ nperiod = 3
  eps = 0.18
  epsl = 2.0
  shat = 0.8
@@ -14,7 +14,7 @@
  shift = 0.0
  akappa = 1.8   
  akappri = 0.0  
- tri = 0.3 
+ tri = 0.5 
  tripri = 0.0
  rhoc = 0.5
 /

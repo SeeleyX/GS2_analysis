@@ -3,98 +3,169 @@ import os
 import xarray as xr
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker 
 
-def plot_flux_tube_geometry(file_path):
-    print(f"Extracting geometry from: '{file_path}'...\n")
+def plot_poster_geometry(file_path):
+    print(f"Extracting geometry and temperature from: '{file_path}'...\n")
     
     try:
         ds = xr.open_dataset(file_path)
         
-        # Extract the variables
+        # Extract the geometry
         theta = ds['theta'].values
         rplot = ds['rplot'].values
         zplot = ds['zplot'].values
         
+        # Check which variable we are plotting
+        if 'tpar' in ds.data_vars:
+            target_var = ds['tpar']
+        else:
+            print("Warning: 'tpar' not found. Falling back to electrostatic potential 'phi'.")
+            target_var = ds['phi']
+
+        # --- DYNAMIC SLICING ---
+        slice_args = {}
+        if 't' in target_var.dims:
+            slice_args['t'] = -1
+        if 'species' in target_var.dims:
+            slice_args['species'] = 0
+        if 'kx' in target_var.dims:
+            slice_args['kx'] = 0
+        if 'ky' in target_var.dims:
+            slice_args['ky'] = 0
+            
+        data_slice = target_var.isel(**slice_args)
+
+        # Calculate the amplitude (magnitude)
+        data_real = data_slice.isel(ri=0).values
+        data_imag = data_slice.isel(ri=1).values
+        data_abs = np.sqrt(data_real**2 + data_imag**2)
+        
+        # Normalize the amplitude
+        max_val = np.max(data_abs)
+        if max_val > 0:
+            data_abs = data_abs / max_val
+            
         ds.close()
     except Exception as e:
         print(f"Error opening or reading file: {e}")
         return
 
-    # Find the index where theta is closest to 0 (the outboard midplane)
-    idx_theta_0 = np.argmin(np.abs(theta))
+    # --- R-AVERAGING LOGIC (For the 1D Line Graph) ---
+    num_bins = 50 
+    r_bins = np.linspace(rplot.min(), rplot.max(), num_bins + 1)
+    r_centers = 0.5 * (r_bins[:-1] + r_bins[1:]) # Find the middle of each bin for plotting
     
-    # --- Create the Figure ---
-    fig = plt.figure(figsize=(14, 6))
+    # Figure out which bin each rplot value falls into
+    bin_indices = np.digitize(rplot, r_bins)
+    
+    # Calculate the average amplitude inside each R bin
+    data_avg_binned = np.zeros(num_bins)
+    for i in range(1, num_bins + 1):
+        mask = (bin_indices == i)
+        if np.any(mask):
+            data_avg_binned[i-1] = np.mean(data_abs[mask])
+        else:
+            data_avg_binned[i-1] = np.nan 
+    # -------------------------
 
-    # --- Panel 1: 2D Poloidal Cross-Section ---
-    ax1 = fig.add_subplot(1, 2, 1)
+# --- Figure 1: Dual Y-Axis Plot (Flux Surface + Temp Graph) ---
+    fig1, ax1 = plt.subplots(figsize=(8, 12)) # Taller canvas to safely fit the new 1:1 ratio limits
     
-    # Plot the full field line trace in 2D
-    ax1.plot(rplot, zplot, color='tab:blue', linewidth=2, label='Field Line Trace')
+    # Left Y-Axis: Plot the Flux Surface Geometry (Z vs R)
+    ax1.plot(rplot, zplot, color='black', linewidth=2, alpha=0.6, label='Flux Surface')
+    ax1.set_xlabel('R', fontsize=16, fontweight='bold')
+    ax1.set_ylabel('Z', fontsize=16, fontweight='bold', color='black')
+    ax1.tick_params(axis='y', labelcolor='black', labelsize=12)
+    ax1.tick_params(axis='x', labelsize=12)
     
-    # Mark the exact location of theta = 0
-    ax1.plot(rplot[idx_theta_0], zplot[idx_theta_0], marker='*', color='red', 
-             markersize=15, label=r'$\theta = 0$ (Outboard Midplane)')
+    # --- HARDCODE THE LIMITS AND EXACT TICK MARKS ---
+    ax1.set_xlim(2.4, 3.6)
+    ax1.set_ylim(-1.1, 1.1)
     
-    ax1.set_aspect('equal')
-    ax1.set_xlabel('Major Radius, R (Normalized)', fontsize=12)
-    ax1.set_ylabel('Height, Z (Normalized)', fontsize=12)
-    ax1.set_title('2D Poloidal Cross-Section of the Flux Tube', fontsize=14)
-    ax1.grid(True, linestyle='--', alpha=0.6)
-    ax1.legend(loc='upper right')
+    # Force the exact numbers to appear on the axes
+    ax1.set_xticks([2.4, 2.7, 3.0, 3.3, 3.6])
+    ax1.set_yticks([-1.1, -0.5, 0.0, 0.5, 1.1])
+    
+    # FORCE EQUAL ASPECT RATIO 
+    ax1.set_aspect('equal', adjustable='box')
+    # -------------------------------------------------------------------------
+    
+    # Right Y-Axis: Plot the R-Averaged Temperature (Temp vs R)
+    ax2 = ax1.twinx() 
+    
+    # Filter out the NaN values so the line connects smoothly
+    valid_mask = ~np.isnan(data_avg_binned)  
+    r_valid = r_centers[valid_mask]          
+    data_valid = data_avg_binned[valid_mask] 
+    
+    # Plot using the filtered data
+    ax2.plot(r_valid, data_valid, color='tab:blue', linewidth=2, label='Temp Perturbation')
+    
+    # --- HARDCODE LIMITS AND TICKS FOR TEMPERATURE ---
+    ax2.set_ylim(0.0, 0.06)
+    ax2.set_yticks([0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06])
+    # -------------------------------------------------------------------------
 
-    # --- Panel 2: 3D Toroidal Spiral ---
-    ax2 = fig.add_subplot(1, 2, 2, projection='3d')
+    # Set the label using raw string formatting for LaTeX rendering
+    ax2.set_ylabel(r'$\delta T$', fontsize=18, fontweight='bold', color='tab:blue')
+    ax2.tick_params(axis='y', labelcolor='tab:blue', labelsize=12)
     
-    # In a tokamak, the field line twists toroidally as it moves poloidally.
-    # We use theta (scaled by an approximate safety factor q) for the toroidal angle.
-    q_approx = 1.4 # From your input file pk=1.4
+    # Add a grid and a combined legend for clarity
+    # ax1.grid(False)
+    lines_1, labels_1 = ax1.get_legend_handles_labels()
+    lines_2, labels_2 = ax2.get_legend_handles_labels()
+    
+    # Move legend slightly out of the way of the strict bounds
+    # ax1.legend(lines_1 + lines_2, labels_1 + labels_2, loc='upper right', fontsize=12)
+    
+    fig1.tight_layout()
+
+    # --- Figure 2: 3D Toroidal Spiral ---
+    fig2 = plt.figure(figsize=(8, 8))
+    ax2_3d = fig2.add_subplot(111, projection='3d')
+    
+    q_approx = 1.4 
     toroidal_angle = theta * q_approx
     
-    # Convert cylindrical (R, phi, Z) to Cartesian (X, Y, Z) for the 3D plot
     X = rplot * np.cos(toroidal_angle)
     Y = rplot * np.sin(toroidal_angle)
     Z = zplot
 
-    # Plot the 3D spiral
-    ax2.plot(X, Y, Z, color='tab:blue', linewidth=2)
-    
-    # Mark the theta = 0 point in 3D
-    ax2.plot([X[idx_theta_0]], [Y[idx_theta_0]], [Z[idx_theta_0]], 
-             marker='*', color='red', markersize=15)
+    ax2_3d.plot(X, Y, Z, color='red', linewidth=3)
 
-    # Make the 3D axes scaled equally so the donut doesn't look squished
-    max_range = np.array([X.max()-X.min(), Y.max()-Y.min(), Z.max()-Z.min()]).max() / 2.0
+    max_range_3d = np.array([X.max()-X.min(), Y.max()-Y.min(), Z.max()-Z.min()]).max() / 2.0
     mid_x = (X.max()+X.min()) * 0.5
     mid_y = (Y.max()+Y.min()) * 0.5
     mid_z = (Z.max()+Z.min()) * 0.5
     
-    ax2.set_xlim(mid_x - max_range, mid_x + max_range)
-    ax2.set_ylim(mid_y - max_range, mid_y + max_range)
-    ax2.set_zlim(mid_z - max_range, mid_z + max_range)
+    ax2_3d.set_xlim(mid_x - max_range_3d, mid_x + max_range_3d)
+    ax2_3d.set_ylim(mid_y - max_range_3d, mid_y + max_range_3d)
+    ax2_3d.set_zlim(mid_z - max_range_3d, mid_z + max_range_3d)
 
-    ax2.set_xlabel('X', fontsize=10)
-    ax2.set_ylabel('Y', fontsize=10)
-    ax2.set_zlabel('Z', fontsize=10)
-    ax2.set_title('3D View of the Magnetic Field Line', fontsize=14)
+    ax2_3d.axis('off') 
+    fig2.tight_layout()
 
-    fig.tight_layout()
-    
-    # Save the plot
+    # --- Save the plots (High Quality) ---
     output_dir = "Figures"
     os.makedirs(output_dir, exist_ok=True)
     file_basename = os.path.basename(file_path).replace('.out.nc', '')
-    save_path = os.path.join(output_dir, f"flux_tube_geometry_{file_basename}.png")
-    plt.savefig(save_path, dpi=300)
     
-    print(f"Plot successfully saved to: '{save_path}'")
+    save_path_2d = os.path.join(output_dir, f"poster_sharedX_temp_2D_{file_basename}.png")
+    fig1.savefig(save_path_2d, dpi=600, transparent=True, bbox_inches='tight')
+    
+    save_path_3d = os.path.join(output_dir, f"poster_flux_tube_3D_{file_basename}.png")
+    fig2.savefig(save_path_3d, dpi=600, transparent=True, bbox_inches='tight')
+    
+    print(f"High-Res Shared X-Axis Plot saved to: '{save_path_2d}'")
+    print(f"High-Res 3D Plot saved to: '{save_path_3d}'")
+    
     plt.show()
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python plot_flux_tube.py <path_to_out_nc_file>")
-        print("Example: python plot_flux_tube.py Inputs/ITG_kyscan/tri_0.1/tri_0.1.out.nc")
         sys.exit(1)
         
     target_file = sys.argv[1]
-    plot_flux_tube_geometry(target_file)
+    plot_poster_geometry(target_file)
