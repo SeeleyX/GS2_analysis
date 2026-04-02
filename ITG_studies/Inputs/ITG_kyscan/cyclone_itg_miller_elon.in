@@ -12,7 +12,7 @@
  shat = 0.8
  pk = 1.4
  shift = 0.0
- akappa = 1.0   
+ akappa = 1.6   
  akappri = 0.0  
  tri = 0.0 
  tripri = 0.0
@@ -74,7 +74,7 @@
   mass = 5.4e-4
   dens = 1.0
   temp = 1.0
-  tprim = 0.5
+  tprim = 6.9
   fprim = 2
   uprim = 0.0
   vnewk = 0.0
