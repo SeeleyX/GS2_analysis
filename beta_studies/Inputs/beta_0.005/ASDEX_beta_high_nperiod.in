@@ -41,7 +41,7 @@
  fapar = 1.0
  fbpar = 1.0
  delt = 0.05
- nstep = 1500
+ nstep = 2000
 /
 
 &fields_knobs

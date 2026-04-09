@@ -1,20 +1,12 @@
-&kt_grids_knobs
-  grid_option = "range"
-/
-
-&kt_grids_range_parameters
-  naky = 14
-  aky_min = 0.1
-  aky_max = 1.0
-  ntheta0 = 1           
-  theta0_min = 0.0      
-  theta0_max = 0.0      
+&kt_grids_single_parameters
+  aky = 0.4
+  akx = 0.0
 /
 
 &theta_grid_parameters
  geotype = 0
  ntheta = 32
- nperiod = 10
+ nperiod = 70
  eps = 0.17
  epsl = 2.0
  shat = 0.95
@@ -38,18 +30,18 @@
 
 &le_grids_knobs
  npassing = 5
- nesub = 10
- nesuper = 2
+ nesub = 12
+ nesuper = 4
 /
 
 &knobs
- beta = 0.06
+ beta = 0.015
  zeff = 1.0
  fphi = 1.0
  fapar = 1.0
  fbpar = 1.0
  delt = 0.05
- nstep = 1000
+ nstep = 2000
 /
 
 &fields_knobs
@@ -66,7 +58,7 @@
   dens = 1.0
   temp = 1.0
   tprim = 4.17
-  fprim = 1.5
+  fprim = 0.7
   uprim = 0.0
   vnewk = 0.0022
   type = 'ion'
@@ -83,7 +75,7 @@
   dens = 1.0
   temp = 0.9
   tprim = 5.92
-  fprim = 1.5
+  fprim = 0.7
   uprim = 0.0
   vnewk = 0.16
   type = 'electron'

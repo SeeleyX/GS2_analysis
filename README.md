@@ -70,6 +70,26 @@ To run code more computationally intensive than these tests on Viking, one must 
 ```
 Where --ntasks>1 to run GS2 with MPI. The time one plans to spend on the node can be altered, too, using the --time keyword. 
 
+### Running GS2 on Viking
+
+Git pull the most recent version of ```GS2_Analysis``` to Viking. On the home directory ```slurm.submit``` will contain all the necessarry modules and will use the ```GS2env``` that what set up prior. 
+
+**ENSURE THAT ALL PATH NAMES AGREE WITHIN ```./run_gs2.sh``` AND INSIDE ```slurm.submit```.** 
+
+Run on Viking on 1 node using:
+```bash
+sbatch submit.slurm
+```
+Check you are in the queue with:
+```bash
+squeue -u username
+```
+Check how the simulation is running with 
+```bash
+tail -f slurm-<queue_ID>.out
+```
+
+
 ## Adding files to this GitHub page 
 Once cloning this file to where you are working on it, setting up an SSH authentication key, one can edit this page. 
 
