@@ -24,7 +24,7 @@ cp "$INPUT_FILE" "$DIR_NAME/"
 # 7. Move into the directory and execute GS2
 echo "Starting GS2 run in directory: $DIR_NAME with beta = $BETA_VAL"
 cd "$DIR_NAME" || exit
-mpirun -n 6 /Users/williamseeley/gyrokinetics/gs2/bin/gs2 "$(basename "$INPUT_FILE")"
+mpirun -n 6 /Users/williamseeley/gyrokinetics/gs2/bin/gs2 "$(basename "$INPUT_FILE")" > run.log
 
 # 8. Return to the original directory when finished
 cd ..

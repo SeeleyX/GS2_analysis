@@ -3,7 +3,7 @@
 /
 
 &kt_grids_range_parameters
-  naky = 14
+  naky = 20
   aky_min = 0.1
   aky_max = 1.0
   ntheta0 = 1           
@@ -13,8 +13,8 @@
 
 &theta_grid_parameters
  geotype = 0
- ntheta = 32
- nperiod = 70
+ ntheta = 64
+ nperiod = 2
  eps = 0.17
  epsl = 2.0
  shat = 0.95
@@ -43,13 +43,13 @@
 /
 
 &knobs
- beta = 0.06
+  beta = 0.0138
  zeff = 1.0
  fphi = 1.0
  fapar = 1.0
  fbpar = 1.0
  delt = 0.05
- nstep = 1000
+ nstep = 1500
 /
 
 &fields_knobs
@@ -105,10 +105,10 @@
  print_line = .false.
  write_verr = .false.
  write_avg_moments = .F.
- nwrite = 1000
+ nwrite = 5
  navg = 5
  omegatol = -0.001
  omegatinst = 500.0
  save_for_restart = .false.
- write_fluxes = .false.
+ write_fluxes = .true.
 /
