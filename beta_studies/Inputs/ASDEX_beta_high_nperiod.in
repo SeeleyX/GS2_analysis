@@ -6,7 +6,7 @@
 &theta_grid_parameters
  geotype = 0
  ntheta = 32
- nperiod = 70
+ nperiod = 60
  eps = 0.17
  epsl = 2.0
  shat = 0.95
@@ -35,7 +35,7 @@
 /
 
 &knobs
- beta = 0.005
+ beta = 0.06
  zeff = 1.0
  fphi = 1.0
  fapar = 1.0
