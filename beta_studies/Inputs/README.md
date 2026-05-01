@@ -15,3 +15,10 @@ tail -f run.log
 ```
 
 - ```scan_ky``` can scan over the ```aky``` parameter in the input file. This command runs the previous command in a loop until the desired $k_y$ parameter space has been scanned. 
+
+The folder ```betaPrime_auto``` uses an equation for ```beta_prime_input``` that is given as:
+$$
+\beta' = -\beta \epsilon \sum_{s=1}^{N} \left[ n_s T_s (\frac{a}{L_{Ts}} + \frac{a}{L_{ns}}) \right],\\
+\beta' = -\beta \epsilon \sum_{s=1}^{N} \left[ \text{dens}_s \text{temp}_s (\text{fprim}_s + \text{tprim}_s) \right].
+$$
+When scanning through beta parameters this must also be changed accordingly. 

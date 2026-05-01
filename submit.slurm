@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=GS2_beta_scan
 #SBATCH --time=4:00:00
-#SBATCH --nodes=1
+#SBATCH --nodes=2
 #SBATCH --ntasks-per-node=16
 #SBATCH --mem=128G
 #SBATCH --output=slurm-%j.out

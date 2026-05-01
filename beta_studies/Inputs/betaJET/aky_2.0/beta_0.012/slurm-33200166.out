@@ -1,0 +1,66 @@
+
+The following have been reloaded with a version change:
+  1) XZ/5.4.2-GCCcore-12.3.0 => XZ/5.4.4-GCCcore-13.2.0
+  2) bzip2/1.0.8-GCCcore-12.3.0 => bzip2/1.0.8-GCCcore-13.2.0
+
+Starting GS2...
+Starting GS2 run in directory: beta_0.01200 with beta = 0.01200
+ Created by GS2 at 2026-04-21T14:08:00.117Z+01:00
+ GS2 version: 8.2.1
+ Run UUID: 55342635-203F-4B5A-8F55-3D465F746D27
+ GK_SYSTEM: viking
+ Compiler: gfortran
+ Build tag: None
+
+Running on 4 processors 
+
+
+ Initialization             21.411 min   59.1 %
+(field matrix invert         5.528 min   15.3 %)
+(field matrix invert mpi     0.019 min    0.1 %)
+(field matrix dump           0.000 min    0.0 %)
+(field matrix read           0.000 min    0.0 %)
+ Advance steps              14.831 min   40.9 %
+(field solve                 3.368 min    9.3 %)
+(field solve mpi             2.103 min    5.8 %)
+(collisions                 14.047 min   38.8 %)
+(collisions mpi              4.628 min   12.8 %)
+(explicit/nl                 0.000 min    0.0 %)
+(explicit/nl mpi             0.000 min    0.0 %)
+(explicit/nl fft             0.000 min    0.0 %)
+(explicit/nl fields          0.000 min    0.0 %)
+(diagnostics                 0.001 min    0.0 %)
+ Re-initialize               0.000 min    0.0 %
+ Redistribute                6.413 min   17.7 %
+(redistribute mpi            4.629 min   12.8 %)
+(redistribute copy           1.784 min    4.9 %)
+ Finishing                   0.001 min    0.0 %
+ MPI                         8.543 min   23.6 %
+(Overheads                   0.000 min    0.0 %)
+(Collectives                 3.914 min   10.8 %)
+(PTP                         0.003 min    0.0 %)
+(Sync                        4.626 min   12.8 %)
+ total from timer is:    36.25 min
+
+Run finished at 2026-04-21T14:44:14.944Z+01:00
+Run complete. Outputs saved in beta_0.01200/
+
+============================
+ Job utilisation efficiency
+============================
+
+Job ID: 33200166
+Cluster: viking2.yor.alces.network
+User/Group: qcd511/clusterusers
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 4
+CPU Utilized: 02:24:27
+CPU Efficiency: 99.44% of 02:25:16 core-walltime
+Job Wall-clock time: 00:36:19
+Memory Utilized: 8.85 GB
+Memory Efficiency: 6.92% of 128.00 GB
+ Requested wall clock time: 1-00:00:00
+    Actual wall clock time: 00:36:19
+Wall clock time efficiency: 2.5%
+           Job queued time: 00:42:50
