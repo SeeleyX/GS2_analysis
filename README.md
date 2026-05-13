@@ -7,6 +7,11 @@ Initialising GS2 on the Viking cluster requires running tests built into GS2
 ```bash
    ssh your_username@viking.york.ac.uk
 ```
+or if off-site without VPN:
+```bash
+   ssh -J your_username@ssh.york.ac.uk your_username@viking.york.ac.uk
+```
+
 **Load the base Python module**
 ```bash
    module load Python/3.11.3-GCCcore-12.3.0
