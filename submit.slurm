@@ -1,9 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=GS2_beta_scan
-#SBATCH --time=4:00:00
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=16
-#SBATCH --mem=128G
+#SBATCH --time=24:00:00
+#SBATCH --nodes=8
+#SBATCH --ntasks-per-node=4
 #SBATCH --output=slurm-%j.out
 
 # ==========================================
@@ -41,10 +40,10 @@ ulimit -s unlimited
 # Set a hint for OpenMPI to use stable communication paths
 export OMPI_MCA_btl=self,vader,tcp
 
-echo "Starting GS2 with mpirun..."
+echo "Starting GS2..."
 
-# Use mpirun to launch the script. 
-./beta_studies/Inputs/run_gs2.sh beta_studies/Inputs/ASDEX_beta_high_nperiod.in
+# NOTE: Using the absolute path to run_gs2.sh so it works from inside the beta_* folders
+$HOME/GS2_analysis/beta_studies/Inputs/run_gs2.sh $1
 
 # Safely close the environment
 deactivate

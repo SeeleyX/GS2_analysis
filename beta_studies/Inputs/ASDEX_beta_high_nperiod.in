@@ -4,9 +4,10 @@
 /
 
 &theta_grid_parameters
+ auto_set_beta_prime = .true.
  geotype = 0
- ntheta = 32
- nperiod = 60
+ ntheta = 64
+ nperiod = 79
  eps = 0.17
  epsl = 2.0
  shat = 0.95
@@ -35,13 +36,13 @@
 /
 
 &knobs
- beta = 0.06
+ beta = 0.08
  zeff = 1.0
  fphi = 1.0
  fapar = 1.0
  fbpar = 1.0
  delt = 0.05
- nstep = 1500
+ nstep = 2000
 /
 
 &fields_knobs

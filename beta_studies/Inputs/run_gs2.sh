@@ -24,7 +24,7 @@ cp "$INPUT_FILE" "$DIR_NAME/"
 # 7. Move into the directory and execute GS2
 echo "Starting GS2 run in directory: $DIR_NAME with beta = $BETA_VAL"
 cd "$DIR_NAME" || exit
-mpirun -n $SLURM_NTASKS "$HOME/software/src/gs2/bin/gs2" "$(basename "$INPUT_FILE")"
+srun -n $SLURM_NTASKS "$HOME/software/src/gs2/bin/gs2" "$(basename "$INPUT_FILE")"
 
 # 8. Return to the original directory when finished
 cd ..
